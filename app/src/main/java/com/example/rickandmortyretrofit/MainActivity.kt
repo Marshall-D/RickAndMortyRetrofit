@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import com.example.rickandmortyretrofit.databinding.ActivityMainBinding
+import com.example.rickandmortyretrofit.network.ApiClient
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +22,9 @@ private lateinit var binding: ActivityMainBinding
 
      binding = ActivityMainBinding.inflate(layoutInflater)
      setContentView(binding.root)
+
+        val client = ApiClient.apiService.fetchCharacters("1")
+
 
         setSupportActionBar(binding.toolbar)
 
