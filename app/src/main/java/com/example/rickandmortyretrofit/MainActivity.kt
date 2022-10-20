@@ -10,6 +10,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.rickandmortyretrofit.databinding.ActivityMainBinding
 import com.example.rickandmortyretrofit.network.ApiClient
 import com.example.rickandmortyretrofit.network.CharacterResponse
@@ -35,6 +37,16 @@ class MainActivity : AppCompatActivity() {
             ){
                 if (response.isSuccessful){
                     Log.d("characters", ""+response.body())
+
+                    val result = response.body()?.results
+
+                    result?.let {
+                        val adapter = MainAdapter(result)
+                        val recyclerView = findViewById<RecyclerView>(R.id.charactersRv)
+                        recyclerView?.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+                        recyclerView?.adapter = adapter
+                    }
+
                 }
             }
 
