@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         val client = ApiClient.apiService.fetchCharacters("1")
 
-        client.enqueue(object : retrofit2.Callback<CharacterResponse> {
+        client.enqueue(object : Callback<CharacterResponse> {
             override fun onResponse(
                 call: Call<CharacterResponse>,
                 response: Response<CharacterResponse>
