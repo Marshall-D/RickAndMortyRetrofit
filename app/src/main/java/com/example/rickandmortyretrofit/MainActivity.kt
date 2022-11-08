@@ -46,27 +46,11 @@ class MainActivity : AppCompatActivity() {
                         recyclerView?.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
                         recyclerView?.adapter = adapter
                     }
-
                 }
             }
-
             override fun onFailure(call:Call<CharacterResponse>, t: Throwable){
                 Log.e("failed", ""+t.message)
-
             }
-
-
         })
-
-
-
-
-
-
     }
-
-
-
-
-
 }
