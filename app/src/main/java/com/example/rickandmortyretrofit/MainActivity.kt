@@ -10,6 +10,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.rickandmortyretrofit.databinding.ActivityMainBinding
@@ -21,36 +22,24 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-
+    private val viewModel : MainViewModel by lazy {
+        ViewModelProvider(this)[MainViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
      setContentView(R.layout.activity_main)
 
-        val client = ApiClient.apiService.fetchCharacters("1")
+        viewModel.characterLiveData.observe(this) { it ->
+            val adapter = MainAdapter(it)
+            val recyclerView = findViewById<RecyclerView>(R.id.charactersRv)
+            recyclerView?.layoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            recyclerView?.adapter = adapter
 
-        client.enqueue(object : Callback<CharacterResponse> {
-            override fun onResponse(
-                call: Call<CharacterResponse>,
-                response: Response<CharacterResponse>
-            ){
-                if (response.isSuccessful){
-                    Log.d("characters", ""+response.body())
+        }
 
-                    val result = response.body()?.results
 
-                    result?.let {
-                        val adapter = MainAdapter(result)
-                        val recyclerView = findViewById<RecyclerView>(R.id.charactersRv)
-                        recyclerView?.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-                        recyclerView?.adapter = adapter
-                    }
-                }
-            }
-            override fun onFailure(call:Call<CharacterResponse>, t: Throwable){
-                Log.e("failed", ""+t.message)
-            }
-        })
     }
 }
